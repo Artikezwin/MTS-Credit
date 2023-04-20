@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: LOAN-ORDER
+      author: artemSlu
+      changes:
+        - createTable:
+            tableName: loan_order
+            columns:
+              - column:
+                  name: id
+                  type: long
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: loan_order_pk
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: long
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tariff_id
+                  type: long
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_loan_order
+                    references: tariff(id)
+              - column:
+                  name: credit_rating
+                  type: double
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time_insert
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: time_update
+                  type: timestamp
+                  constraints:
+                    nullable: false
