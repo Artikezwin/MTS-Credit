@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class TariffRepositoryImpl implements TariffRepository {
@@ -24,10 +25,12 @@ public class TariffRepositoryImpl implements TariffRepository {
 
 
     @Override
-    public List<Tariff> findAll() {
-        return jdbcTemplate.query(
-                SELECT_ALL_FROM_TABLE,
-                new BeanPropertyRowMapper<>(Tariff.class));
+    public Optional<List<Tariff>> findAll() {
+        return Optional.of(
+                jdbcTemplate.query(
+                        SELECT_ALL_FROM_TABLE,
+                        new BeanPropertyRowMapper<>(Tariff.class))
+        );
     }
 
     @Override
@@ -44,7 +47,7 @@ public class TariffRepositoryImpl implements TariffRepository {
     }
 
     @Override
-    public Tariff delete(long id) {
+    public Optional<Tariff> delete(long id) {
 //        Tariff tariff = findTariffById(id);
 //        jdbcTemplate.update(
 //                DELETE_FROM_TABLE,

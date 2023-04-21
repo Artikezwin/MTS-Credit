@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -21,12 +22,11 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
     @Override
     public List<LoanOrder> findByUserId(long userId) {
-        List<LoanOrder> loanOrderList = loanOrderRepository.findByUserId(userId).orElseThrow();
-        return loanOrderList;
+        return loanOrderRepository.findByUserId(userId).orElseThrow();
     }
 
     @Override
-    public int save(CreateOrder order) {
+    public UUID save(CreateOrder order) {
         LoanOrder loanOrder = new LoanOrder();
         loanOrder.setUserId(order.getUserId());
         loanOrder.setTariffId(order.getTariffId());
@@ -58,12 +58,28 @@ public class LoanOrderServiceImpl implements LoanOrderService {
     }
 
     @Override
-    public String getStatusByOrderId(UUID orderId) {
+    public OrderStatus getStatusByOrderId(UUID orderId) {
         return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow();
     }
 
     @Override
     public int deleteByOrderIdAndUserId(UUID orderId, long userId) {
-        return deleteByOrderIdAndUserId(orderId, userId);
+        List<LoanOrder> loanOrderList = loanOrderRepository.findByUserId(userId).orElseThrow();
+        LoanOrder loanOrder = null;
+        for (LoanOrder order : loanOrderList) {
+            if (Objects.equals(order.getOrderId(), orderId.toString())) {
+                loanOrder = order;
+                break;
+            }
+        }
+
+        if (loanOrder == null) {
+            throw new RuntimeException("ORDER_NOT_FOUND");
+        }
+
+        if (loanOrder.getStatus() == OrderStatus.IN_PROGRESS) {
+            return deleteByOrderIdAndUserId(orderId, userId);
+        }
+        throw new RuntimeException("ORDER_IMPOSSIBLE_TO_DELETE");
     }
 }

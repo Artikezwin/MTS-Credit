@@ -1,12 +1,12 @@
 package com.example.creditservice.service.impl;
 
 import com.example.creditservice.model.tariff.Tariff;
+import com.example.creditservice.model.tariff.TariffDTO;
 import com.example.creditservice.repository.TariffRepository;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -16,7 +16,7 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public List<Tariff> getTariffs() {
-        return tariffRepository.findAll();
+        return tariffRepository.findAll().orElseThrow();
     }
 
     @Override
@@ -26,12 +26,15 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public int save(Tariff tariff) {
+    public int save(TariffDTO tariffDTO) {
+        Tariff tariff = new Tariff();
+        tariff.setType(tariffDTO.getType());
+        tariff.setInterestRate(tariffDTO.getInterest_rate());
         return tariffRepository.save(tariff);
     }
 
     @Override
     public Tariff delete(long id) {
-        return tariffRepository.delete(id);
+        return tariffRepository.delete(id).orElseThrow();
     }
 }

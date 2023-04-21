@@ -1,17 +1,19 @@
 package com.example.creditservice.controller;
 
-import com.example.creditservice.model.Answer;
-import com.example.creditservice.model.DataResponseTariff;
+import com.example.creditservice.model.response.Answer;
+import com.example.creditservice.model.response.DataResponseLoanOrder;
+import com.example.creditservice.model.response.DataResponseStatus;
+import com.example.creditservice.model.response.DataResponseTariff;
 import com.example.creditservice.model.loan.order.CreateOrder;
 import com.example.creditservice.model.loan.order.DeleteOrder;
-import com.example.creditservice.model.loan.order.LoanOrder;
-import com.example.creditservice.model.tariff.Tariff;
 import com.example.creditservice.model.tariff.TariffDTO;
 import com.example.creditservice.service.LoanOrderService;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/loan-service")
@@ -22,27 +24,38 @@ public class LoanOrderController {
 
     @PostMapping("/addTariff")
     public ResponseEntity<Integer> addTariff(@RequestBody TariffDTO tariffDTO) {
-        Tariff tariff = new Tariff();
-        tariff.setType(tariffDTO.getType());
-        tariff.setInterestRate(tariffDTO.getInterest_rate());
-        return ResponseEntity.ok(tariffService.save(tariff));
+        return ResponseEntity.ok(tariffService.save(tariffDTO));
     }
 
     @GetMapping("/getTariffs")
     public ResponseEntity<Answer> getTariffs() {
         return ResponseEntity.ok(
                 new Answer(
-                    new DataResponseTariff(
-                            tariffService.getTariffs())));
+                        new DataResponseTariff(
+                                tariffService.getTariffs()))
+        );
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Integer> addOrder(@RequestBody CreateOrder order) {
-        return ResponseEntity.ok(loanOrderService.save(order));
+    public ResponseEntity<Answer> addOrder(@RequestBody CreateOrder order) {
+        return ResponseEntity.ok(
+                new Answer(
+                        new DataResponseLoanOrder(
+                                loanOrderService.save(order)))
+        );
+    }
+
+    @GetMapping("/getStatusOrder")
+    public ResponseEntity<Answer> getStatusOrder(@RequestParam UUID orderId) {
+        return ResponseEntity.ok(
+                new Answer(
+                        new DataResponseStatus(
+                                loanOrderService.getStatusByOrderId(orderId)))
+        );
     }
 
     @DeleteMapping("/deleteOrder")
-    public ResponseEntity<?> deleteOrder(@RequestBody DeleteOrder order) {
-        return ResponseEntity.ok(null);
+    public void deleteOrder(@RequestBody DeleteOrder order) {
+        loanOrderService.deleteByOrderIdAndUserId(order.getOrderId(), order.getUserId());
     }
 }
