@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TariffRepository {
     List<Tariff> findAll();
-    Tariff findTariffById(long id);
+    Boolean existsById(long tariffId);
     int save(Tariff tariff);
     Tariff delete(long id);
 }

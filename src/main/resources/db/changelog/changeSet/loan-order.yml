@@ -50,5 +50,3 @@ databaseChangeLog:
               - column:
                   name: time_update
                   type: timestamp
-                  constraints:
-                    nullable: false

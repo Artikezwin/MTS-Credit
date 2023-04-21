@@ -4,8 +4,10 @@ import com.example.creditservice.model.Answer;
 import com.example.creditservice.model.DataResponseTariff;
 import com.example.creditservice.model.loan.order.CreateOrder;
 import com.example.creditservice.model.loan.order.DeleteOrder;
+import com.example.creditservice.model.loan.order.LoanOrder;
 import com.example.creditservice.model.tariff.Tariff;
 import com.example.creditservice.model.tariff.TariffDTO;
+import com.example.creditservice.service.LoanOrderService;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class LoanOrderController {
     private final TariffService tariffService;
+    private final LoanOrderService loanOrderService;
 
     @PostMapping("/addTariff")
     public ResponseEntity<Integer> addTariff(@RequestBody TariffDTO tariffDTO) {
@@ -34,8 +37,8 @@ public class LoanOrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<?> addOrder(@RequestBody CreateOrder order) {
-        return ResponseEntity.ok(null);
+    public ResponseEntity<Integer> addOrder(@RequestBody CreateOrder order) {
+        return ResponseEntity.ok(loanOrderService.save(order));
     }
 
     @DeleteMapping("/deleteOrder")

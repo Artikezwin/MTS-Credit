@@ -6,6 +6,7 @@ import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -20,7 +21,8 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public Tariff getById(long id) {
-        return tariffRepository.findTariffById(id);
+//        return tariffRepository.findTariffById(id);
+        return null;
     }
 
     @Override
