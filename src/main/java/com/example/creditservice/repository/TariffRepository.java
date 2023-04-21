@@ -3,10 +3,11 @@ package com.example.creditservice.repository;
 import com.example.creditservice.model.tariff.Tariff;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TariffRepository {
-    List<Tariff> findAll();
+    Optional<List<Tariff>> findAll();
     Boolean existsById(long tariffId);
     int save(Tariff tariff);
-    Tariff delete(long id);
+    Optional<Tariff> delete(long id);
 }
