@@ -18,7 +18,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
     private final String SELECT_ALL_FROM_TABLE = "select * from LOAN_ORDER";
     private final String SELECT_FROM_TABLE_WHERE_USER_ID = "select * from LOAN_ORDER where USER_ID = ?";
     private final String SELECT_FROM_TABLE_WHERE_ORDER_ID_AND_USER_ID = "select * from LOAN_ORDER where ORDER_ID = ? AND USER_ID = ?";
-    private final String SELECT_FROM_TABLE_WHERE_ORDER_ID = "select * from LOAN_ORDER where ORDER_ID = ?";
+    private final String SELECT_FROM_TABLE_WHERE_ORDER_ID = "select STATUS from LOAN_ORDER where ORDER_ID = ?";
     private final String INSERT_INTO_TABLE = "insert into LOAN_ORDER (ORDER_ID, USER_ID, TARIFF_ID, CREDIT_RATING, STATUS, TIME_INSERT) values (?, ?, ?, ?, ?, ?)";
     private final String DELETE_BY_ORDER_ID_AND_USER_ID = "delete from LOAN_ORDER where ORDER_ID = ? AND USER_ID = ?";
 
@@ -68,9 +68,9 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
         return Optional.ofNullable(
                 jdbcTemplate.queryForObject(
                         SELECT_FROM_TABLE_WHERE_ORDER_ID,
-                        new BeanPropertyRowMapper<>(LoanOrder.class),
+                        OrderStatus.class,
                         orderId.toString()
-                ).getStatus()
+                )
         );
     }
 
