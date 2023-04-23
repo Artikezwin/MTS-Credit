@@ -1,4 +1,4 @@
-package com.example.creditservice.config;
+package com.example.creditservice.util;
 
 import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.model.error.CustomError;

@@ -13,4 +13,6 @@ public interface LoanOrderRepository {
     UUID save(LoanOrder loanOrder);
     Optional<OrderStatus> getStatusByOrderId(UUID orderId);
     int deleteByUserIdAndOrderId(long userId, UUID orderId);
+    Optional<List<LoanOrder>> findByStatus(OrderStatus status);
+    void updateStatusByOrderId(OrderStatus statusToSet, long id);
 }
