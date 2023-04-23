@@ -46,8 +46,11 @@ public class LoanOrderServiceImpl implements LoanOrderService {
                             log.error("LOAN_ALREADY_APPROVED");
                             throw new CustomException("LOAN_ALREADY_APPROVED", "Заявка уже одобрена");
                         case REFUSED:
-                            log.error("TRY_LATER");
-                            throw new CustomException("TRY_LATER", "Попробуйте позже");
+                            long now = new Timestamp(System.currentTimeMillis()).getTime();
+                            if (now - loanOrderList.get(i).getTimeUpdate().getTime() < 1_000 * 2 * 60) {
+                                log.error("TRY_LATER");
+                                throw new CustomException("TRY_LATER", "Попробуйте позже");
+                            }
                     }
                 }
             }
