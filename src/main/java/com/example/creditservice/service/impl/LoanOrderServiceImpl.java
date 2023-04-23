@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -41,11 +40,14 @@ public class LoanOrderServiceImpl implements LoanOrderService {
                 if (loanOrderList.get(i).getTariffId() == loanOrder.getTariffId()) {
                     switch (loanOrderList.get(i).getStatus()) {
                         case IN_PROGRESS:
-                            throw new CustomException("LOAN_CONSIDERATION", "заявка на рассмотрении");
+                            log.error("LOAN_CONSIDERATION");
+                            throw new CustomException("LOAN_CONSIDERATION", "Заявка на рассмотрении");
                         case APPROVED:
-                            throw new CustomException("LOAN_ALREADY_APPROVED", "заявка уже одобрена");
+                            log.error("LOAN_ALREADY_APPROVED");
+                            throw new CustomException("LOAN_ALREADY_APPROVED", "Заявка уже одобрена");
                         case REFUSED:
-                            throw new CustomException("TRY_LATER", "попробуйте позже");
+                            log.error("TRY_LATER");
+                            throw new CustomException("TRY_LATER", "Попробуйте позже");
                     }
                 }
             }
@@ -56,6 +58,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
             loanOrder.setTimeInsert(new Timestamp(System.currentTimeMillis()));
             return loanOrderRepository.save(loanOrder);
         } else {
+            log.error("TARIFF_NOT_FOUND");
             throw new CustomException("TARIFF_NOT_FOUND", "Тариф не найден");
         }
     }
