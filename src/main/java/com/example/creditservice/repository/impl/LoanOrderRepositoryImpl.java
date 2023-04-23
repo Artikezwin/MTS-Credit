@@ -5,6 +5,7 @@ import com.example.creditservice.model.loan.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -42,14 +43,19 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
 
     @Override
     public Optional<LoanOrder> findByUserIdAndOrderId(long userId, UUID orderId) {
-        return Optional.ofNullable(
-                jdbcTemplate.queryForObject(
-                        SELECT_FROM_TABLE_WHERE_USER_ID_AND_ORDER_ID,
-                        new BeanPropertyRowMapper<>(LoanOrder.class),
-                        userId,
-                        orderId.toString()
-                )
-        );
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            SELECT_FROM_TABLE_WHERE_USER_ID_AND_ORDER_ID,
+                            new BeanPropertyRowMapper<>(LoanOrder.class),
+                            userId,
+                            orderId.toString()
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+
     }
 
     @Override
@@ -68,13 +74,18 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
 
     @Override
     public Optional<OrderStatus> getStatusByOrderId(UUID orderId) {
-        return Optional.ofNullable(
-                jdbcTemplate.queryForObject(
-                        SELECT_FROM_TABLE_WHERE_ORDER_ID,
-                        OrderStatus.class,
-                        orderId.toString()
-                )
-        );
+        try{
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            SELECT_FROM_TABLE_WHERE_ORDER_ID,
+                            OrderStatus.class,
+                            orderId.toString()
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+
     }
 
     @Override
