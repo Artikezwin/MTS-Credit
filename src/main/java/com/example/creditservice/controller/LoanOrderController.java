@@ -1,6 +1,6 @@
 package com.example.creditservice.controller;
 
-import com.example.creditservice.model.response.Answer;
+import com.example.creditservice.model.response.DataResponse;
 import com.example.creditservice.model.response.DataResponseLoanOrder;
 import com.example.creditservice.model.response.DataResponseStatus;
 import com.example.creditservice.model.response.DataResponseTariff;
@@ -30,27 +30,27 @@ public class LoanOrderController {
     }
 
     @GetMapping("/getTariffs")
-    public ResponseEntity<Answer> getTariffs() {
+    public ResponseEntity<DataResponse> getTariffs() {
         return ResponseEntity.ok(
-                new Answer(
+                new DataResponse(
                         new DataResponseTariff(
                                 tariffService.getTariffs()))
         );
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Answer> addOrder(@RequestBody CreateOrder order) {
+    public ResponseEntity<DataResponse> addOrder(@RequestBody CreateOrder order) {
         return ResponseEntity.ok(
-                new Answer(
+                new DataResponse(
                         new DataResponseLoanOrder(
                                 loanOrderService.save(order)))
         );
     }
 
     @GetMapping("/getStatusOrder")
-    public ResponseEntity<Answer> getStatusOrder(@RequestParam UUID orderId) {
+    public ResponseEntity<DataResponse> getStatusOrder(@RequestParam UUID orderId) {
         return ResponseEntity.ok(
-                new Answer(
+                new DataResponse(
                         new DataResponseStatus(
                                 loanOrderService.getStatusByOrderId(orderId)))
         );

@@ -1,5 +1,6 @@
 package com.example.creditservice.service.impl;
 
+import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.model.enums.OrderStatus;
 import com.example.creditservice.model.loan.order.CreateOrder;
 import com.example.creditservice.model.loan.order.LoanOrder;
@@ -40,11 +41,11 @@ public class LoanOrderServiceImpl implements LoanOrderService {
                 if (loanOrderList.get(i).getTariffId() == loanOrder.getTariffId()) {
                     switch (loanOrderList.get(i).getStatus()) {
                         case IN_PROGRESS:
-                            throw new RuntimeException("LOAN_CONSIDERATION");
+                            throw new CustomException("LOAN_CONSIDERATION", "заявка на рассмотрении");
                         case APPROVED:
-                            throw new RuntimeException("LOAN_ALREADY_APPROVED");
+                            throw new CustomException("LOAN_ALREADY_APPROVED", "заявка уже одобрена");
                         case REFUSED:
-                            throw new RuntimeException("TRY_LATER");
+                            throw new CustomException("TRY_LATER", "попробуйте позже");
                     }
                 }
             }
@@ -55,21 +56,21 @@ public class LoanOrderServiceImpl implements LoanOrderService {
             loanOrder.setTimeInsert(new Timestamp(System.currentTimeMillis()));
             return loanOrderRepository.save(loanOrder);
         } else {
-            throw new RuntimeException("TARIFF_NOT_FOUND");
+            throw new CustomException("TARIFF_NOT_FOUND", "Тариф не найден");
         }
     }
 
     @Override
     public OrderStatus getStatusByOrderId(UUID orderId) {
-        return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow();
+        return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow(() -> new CustomException("TARIFF_NOT_FOUND", "Тариф не найден"));
     }
 
     @Override
     public int deleteByOrderIdAndUserId(long userId, UUID orderId) {
-        LoanOrder loanOrder = loanOrderRepository.findByUserIdAndOrderId(userId, orderId).orElseThrow(() -> new RuntimeException("ORDER_NOT_FOUND"));
+        LoanOrder loanOrder = loanOrderRepository.findByUserIdAndOrderId(userId, orderId).orElseThrow(() -> new CustomException("ORDER_NOT_FOUND", "Заявка не найдена"));
         if (loanOrder.getStatus() == OrderStatus.IN_PROGRESS) {
             return loanOrderRepository.deleteByUserIdAndOrderId(userId, orderId);
         }
-        throw new RuntimeException("ORDER_IMPOSSIBLE_TO_DELETE");
+        throw new CustomException("ORDER_IMPOSSIBLE_TO_DELETE", "Невозможно удалить заявку");
     }
 }
