@@ -7,6 +7,7 @@ import com.example.creditservice.repository.LoanOrderRepository;
 import com.example.creditservice.repository.TariffRepository;
 import com.example.creditservice.service.LoanOrderService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LoanOrderServiceImpl implements LoanOrderService {
     private final LoanOrderRepository loanOrderRepository;
     private final TariffRepository tariffRepository;
@@ -63,22 +65,10 @@ public class LoanOrderServiceImpl implements LoanOrderService {
     }
 
     @Override
-    public int deleteByOrderIdAndUserId(UUID orderId, long userId) {
-        List<LoanOrder> loanOrderList = loanOrderRepository.findByUserId(userId).orElseThrow();
-        LoanOrder loanOrder = null;
-        for (LoanOrder order : loanOrderList) {
-            if (Objects.equals(order.getOrderId(), orderId.toString())) {
-                loanOrder = order;
-                break;
-            }
-        }
-
-        if (loanOrder == null) {
-            throw new RuntimeException("ORDER_NOT_FOUND");
-        }
-
+    public int deleteByOrderIdAndUserId(long userId, UUID orderId) {
+        LoanOrder loanOrder = loanOrderRepository.findByUserIdAndOrderId(userId, orderId).orElseThrow(() -> new RuntimeException("ORDER_NOT_FOUND"));
         if (loanOrder.getStatus() == OrderStatus.IN_PROGRESS) {
-            return deleteByOrderIdAndUserId(orderId, userId);
+            return loanOrderRepository.deleteByUserIdAndOrderId(userId, orderId);
         }
         throw new RuntimeException("ORDER_IMPOSSIBLE_TO_DELETE");
     }

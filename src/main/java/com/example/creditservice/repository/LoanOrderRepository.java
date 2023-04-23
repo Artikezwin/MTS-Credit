@@ -9,7 +9,8 @@ import java.util.UUID;
 
 public interface LoanOrderRepository {
     Optional<List<LoanOrder>> findByUserId(long userId);
+    Optional<LoanOrder> findByUserIdAndOrderId(long userId, UUID orderId);
     UUID save(LoanOrder loanOrder);
     Optional<OrderStatus> getStatusByOrderId(UUID orderId);
-    int deleteByOrderIdAndUserId(UUID orderId, long userId);
+    int deleteByUserIdAndOrderId(long userId, UUID orderId);
 }
