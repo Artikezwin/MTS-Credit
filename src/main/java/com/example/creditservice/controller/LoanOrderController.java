@@ -10,6 +10,7 @@ import com.example.creditservice.model.tariff.TariffDTO;
 import com.example.creditservice.service.LoanOrderService;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/loan-service")
 @RequiredArgsConstructor
+@Slf4j
 public class LoanOrderController {
     private final TariffService tariffService;
     private final LoanOrderService loanOrderService;
@@ -56,6 +58,6 @@ public class LoanOrderController {
 
     @DeleteMapping("/deleteOrder")
     public void deleteOrder(@RequestBody DeleteOrder order) {
-        loanOrderService.deleteByOrderIdAndUserId(order.getOrderId(), order.getUserId());
+        loanOrderService.deleteByOrderIdAndUserId(order.getUserId(), order.getOrderId());
     }
 }

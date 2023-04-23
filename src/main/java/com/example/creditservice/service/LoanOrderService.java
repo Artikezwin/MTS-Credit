@@ -12,5 +12,5 @@ public interface LoanOrderService {
     List<LoanOrder> findByUserId(long userId);
     UUID save(CreateOrder order);
     OrderStatus getStatusByOrderId(UUID orderId);
-    int deleteByOrderIdAndUserId(UUID orderId, long userId);
+    int deleteByOrderIdAndUserId(long userId, UUID orderId);
 }
