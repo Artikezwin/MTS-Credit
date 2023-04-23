@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Random;
 
@@ -28,11 +29,13 @@ public class Scheduler {
             if (new Random().nextBoolean()) {
                 loanOrderRepository.updateStatusByOrderId(
                         OrderStatus.APPROVED,
+                        new Timestamp(System.currentTimeMillis()),
                         loanOrder.getId()
                 );
             } else {
                 loanOrderRepository.updateStatusByOrderId(
                         OrderStatus.REFUSED,
+                        new Timestamp(System.currentTimeMillis()),
                         loanOrder.getId()
                 );
             }

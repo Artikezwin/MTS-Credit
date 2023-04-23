@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class DataResponseError<E> {
-    private E error;
+public class DataResponseError<T> {
+    private T error;
 }
