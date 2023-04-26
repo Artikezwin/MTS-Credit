@@ -1,7 +1,4 @@
 databaseChangeLog:
-  - include:
+  - includeAll:
       relativeToChangelogFile: true
-      file: changeSet/tariff.yml
-  - include:
-      relativeToChangelogFile: true
-      file: changeSet/loan-order.yml
+      path: changeset

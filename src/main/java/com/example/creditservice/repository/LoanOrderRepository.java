@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface LoanOrderRepository {
     Optional<List<LoanOrder>> findByUserId(long userId);
     Optional<LoanOrder> findByUserIdAndOrderId(long userId, UUID orderId);
-    UUID save(LoanOrder loanOrder);
+    Optional<UUID> save(LoanOrder loanOrder);
     Optional<OrderStatus> getStatusByOrderId(UUID orderId);
     int deleteByUserIdAndOrderId(long userId, UUID orderId);
     Optional<List<LoanOrder>> findByStatus(OrderStatus status);

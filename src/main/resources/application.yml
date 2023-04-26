@@ -7,3 +7,18 @@ spring:
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yml
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      loan-order-service:
+        registerHealthIndicator: true
+        slidingWindowSize: 2
+        slidingWindowType: COUNT_BASED
+        permittedNumberOfCallsInHalfOpenState: 4
+        minimumNumberOfCalls: 3
+        waitDurationInOpenState: 5s
+        slowCallRateThreshold: 2
+        slowCallDurationThreshold: 10
+        failureRateThreshold: 50

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @EnableAsync
-@Service
+@Component
 public class Scheduler {
     private final int fixedRate = 1000 * 2 * 60;
     private final int initialDelay = 1000 * 5;

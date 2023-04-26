@@ -62,7 +62,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
     }
 
     @Override
-    public UUID save(LoanOrder loanOrder) {
+    public Optional<UUID> save(LoanOrder loanOrder) {
         jdbcTemplate.update(
                 INSERT_INTO_TABLE,
                 loanOrder.getOrderId(),
@@ -72,7 +72,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
                 loanOrder.getStatus().toString(),
                 loanOrder.getTimeInsert()
         );
-        return UUID.fromString(loanOrder.getOrderId());
+        return Optional.of(UUID.fromString(loanOrder.getOrderId()));
     }
 
     @Override

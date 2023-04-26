@@ -1,11 +1,15 @@
 package com.example.creditservice.model.loan.order;
 
 import com.example.creditservice.model.enums.OrderStatus;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoanOrder {
     private long id;
     private String orderId;
