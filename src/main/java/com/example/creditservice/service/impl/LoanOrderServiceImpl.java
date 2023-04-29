@@ -1,6 +1,7 @@
 package com.example.creditservice.service.impl;
 
 import com.example.creditservice.exception.CustomException;
+import com.example.creditservice.exception.TimeOutException;
 import com.example.creditservice.model.enums.OrderStatus;
 import com.example.creditservice.model.loan.order.CreateOrder;
 import com.example.creditservice.model.loan.order.LoanOrder;
@@ -28,7 +29,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         return loanOrderRepository.findByUserId(userId).orElseThrow();
     }
 
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "saveFallBack")
+    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "saveFallback")
     @Override
     public UUID save(CreateOrder order) {
         LoanOrder loanOrder = new LoanOrder();
@@ -71,30 +72,19 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         }
     }
 
-    public UUID saveFallBack(final Throwable t) {
-        log.error("Exception: " +  t.getMessage());
-        throw new CustomException("SAVING_ERROR", "Ошибка сохранения заявки. Превышено время ожидания");
-    }
-
     @CircuitBreaker(name = "loan-order-service", fallbackMethod = "getStatusByOrderIdFallback")
     @Override
     public OrderStatus getStatusByOrderId(UUID orderId) {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (Exception e) {
-            throw new RuntimeException();
+
         }
 
         return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow(() -> new CustomException("TARIFF_NOT_FOUND", "Тариф не найден"));
     }
 
-    public OrderStatus getStatusByOrderIdFallback(final Throwable t) {
-        log.error("Exception: " + t.getMessage());
-        return OrderStatus.IN_PROGRESS;
-//        throw new CustomException("GETTING_STATUS_ERROR", "Ошибка получения статуса. Превышено время ожидания");
-    }
-
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "deleteByOrderIdAndUserIdFallBack")
+    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "deleteByOrderIdAndUserIdFallback")
     @Override
     public int deleteByOrderIdAndUserId(long userId, UUID orderId) {
         LoanOrder loanOrder = loanOrderRepository.findByUserIdAndOrderId(userId, orderId).orElseThrow(() -> new CustomException("ORDER_NOT_FOUND", "Заявка не найдена"));
@@ -104,7 +94,18 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         throw new CustomException("ORDER_IMPOSSIBLE_TO_DELETE", "Невозможно удалить заявку");
     }
 
-    public int deleteByOrderIdAndUserIdFallBack(final Throwable t) {
-        throw new CustomException("DELETE_ERROR", "Ошибка удаления. Превышено время ожидания");
+    @Override
+    public UUID saveFallback(final Throwable t) {
+        throw new TimeOutException("REQUEST_TIME_OUT: SAVE_ORDER", "Не удалось сохранить заявку. Превышено время ожидания");
+    }
+
+    @Override
+    public OrderStatus getStatusByOrderIdFallback(final Throwable t) {
+        throw new TimeOutException("REQUEST_TIME_OUT: GET_STATUS", "Не удалось получить статус заявки. Превышено время ожидания");
+    }
+
+    @Override
+    public int deleteByOrderIdAndUserIdFallback(final Throwable t) {
+        throw new TimeOutException("REQUEST_TIME_OUT: DELETE_ORDER", "Не удалось удалить удалить заявку. Превышено время ожидания");
     }
 }

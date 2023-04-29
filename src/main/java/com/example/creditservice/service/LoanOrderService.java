@@ -6,7 +6,6 @@ import com.example.creditservice.model.loan.order.CreateOrder;
 import com.example.creditservice.model.loan.order.LoanOrder;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public interface LoanOrderService {
@@ -14,4 +13,8 @@ public interface LoanOrderService {
     UUID save(CreateOrder order) throws CustomException;
     OrderStatus getStatusByOrderId(UUID orderId);
     int deleteByOrderIdAndUserId(long userId, UUID orderId) throws CustomException;
+
+    UUID saveFallback(final Throwable t);
+    OrderStatus getStatusByOrderIdFallback(final Throwable t);
+    int deleteByOrderIdAndUserIdFallback(final Throwable t);
 }
