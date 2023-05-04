@@ -47,13 +47,10 @@ public class TariffRepositoryImpl implements TariffRepository {
     }
 
     @Override
-    public Optional<Tariff> delete(long id) {
-//        Tariff tariff = findTariffById(id);
-//        jdbcTemplate.update(
-//                DELETE_FROM_TABLE,
-//                id
-//        );
-//        return tariff;
-        return null;
+    public int delete(long id) {
+        return jdbcTemplate.update(
+                DELETE_FROM_TABLE,
+                id
+        );
     }
 }

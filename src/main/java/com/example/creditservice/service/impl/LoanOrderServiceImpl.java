@@ -8,7 +8,6 @@ import com.example.creditservice.model.loan.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import com.example.creditservice.repository.TariffRepository;
 import com.example.creditservice.service.LoanOrderService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class LoanOrderServiceImpl implements LoanOrderService {
     private final LoanOrderRepository loanOrderRepository;
     private final TariffRepository tariffRepository;
@@ -29,7 +28,6 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         return loanOrderRepository.findByUserId(userId).orElseThrow();
     }
 
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "saveFallback")
     @Override
     public UUID save(CreateOrder order) {
         LoanOrder loanOrder = new LoanOrder();
@@ -72,25 +70,18 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         }
     }
 
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "getStatusByOrderIdFallback")
     @Override
     public OrderStatus getStatusByOrderId(UUID orderId) {
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
-
-        }
-
-        return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow(() -> new CustomException("TARIFF_NOT_FOUND", "Тариф не найден"));
+        return loanOrderRepository.getStatusByOrderId(orderId).orElseThrow(() -> new CustomException("ORDER_NOT_FOUND", "Заявка не найдена"));
     }
 
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "deleteByOrderIdAndUserIdFallback")
     @Override
     public int deleteByOrderIdAndUserId(long userId, UUID orderId) {
         LoanOrder loanOrder = loanOrderRepository.findByUserIdAndOrderId(userId, orderId).orElseThrow(() -> new CustomException("ORDER_NOT_FOUND", "Заявка не найдена"));
         if (loanOrder.getStatus() == OrderStatus.IN_PROGRESS) {
             return loanOrderRepository.deleteByUserIdAndOrderId(userId, orderId);
         }
+
         throw new CustomException("ORDER_IMPOSSIBLE_TO_DELETE", "Невозможно удалить заявку");
     }
 

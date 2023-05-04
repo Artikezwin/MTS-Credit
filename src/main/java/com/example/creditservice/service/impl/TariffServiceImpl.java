@@ -5,7 +5,6 @@ import com.example.creditservice.model.tariff.Tariff;
 import com.example.creditservice.model.tariff.TariffDTO;
 import com.example.creditservice.repository.TariffRepository;
 import com.example.creditservice.service.TariffService;
-import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,6 @@ import java.util.List;
 public class TariffServiceImpl implements TariffService {
     private final TariffRepository tariffRepository;
 
-    @CircuitBreaker(name = "loan-order-service", fallbackMethod = "getTariffsFallback")
     @Override
     public List<Tariff> getTariffs() {
         return tariffRepository.findAll().orElseThrow();
@@ -31,8 +29,8 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public Tariff delete(long id) {
-        return tariffRepository.delete(id).orElseThrow();
+    public int delete(long id) {
+        return tariffRepository.delete(id);
     }
 
     @Override

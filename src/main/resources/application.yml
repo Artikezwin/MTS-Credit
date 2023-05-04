@@ -1,32 +1,9 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./credit_db
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mts-credit
     username: user
     password: 1234
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yml
-
-resilience4j.circuitbreaker:
-  configs:
-    default:
-      sliding-window-type: count_based
-      slidingWindowSize: 5
-      permittedNumberOfCallsInHalfOpenState: 10
-      waitDurationInOpenState: 5000
-      slow-call-rate-threshold: 70
-#      failureRateThreshold: 70
-      slow-call-duration-threshold: 1500
-      minimum-number-of-calls: 3
-      register-health-indicator: true
-      ignore-exceptions:
-        - com.example.creditservice.exception.CustomException
-  instances:
-    loan-order-service:
-      baseConfig: default
-
-management:
-  health:
-    circuitbreakers:
-      enabled: on

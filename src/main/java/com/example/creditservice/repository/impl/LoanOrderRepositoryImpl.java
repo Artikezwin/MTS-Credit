@@ -96,7 +96,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
         return jdbcTemplate.update(
                 DELETE_BY_USER_ID_AND_ORDER_ID,
                 userId,
-                orderId
+                orderId.toString()
         );
     }
 
