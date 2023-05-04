@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface TariffService {
     List<Tariff> getTariffs();
-    Tariff getById(long id);
     int save(TariffDTO tariffDTO);
     Tariff delete(long id);
+
+    List<Tariff> getTariffsFallback(final Throwable t);
 }
