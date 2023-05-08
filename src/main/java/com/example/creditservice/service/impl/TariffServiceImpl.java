@@ -2,7 +2,7 @@ package com.example.creditservice.service.impl;
 
 import com.example.creditservice.exception.TimeOutException;
 import com.example.creditservice.model.tariff.Tariff;
-import com.example.creditservice.model.tariff.TariffDTO;
+import com.example.creditservice.model.request.TariffDTO;
 import com.example.creditservice.repository.TariffRepository;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public int delete(long id) {
+    public int deleteById(long id) {
         return tariffRepository.delete(id);
     }
 

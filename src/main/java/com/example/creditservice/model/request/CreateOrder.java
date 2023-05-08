@@ -1,4 +1,4 @@
-package com.example.creditservice.model.loan.order;
+package com.example.creditservice.model.request;
 
 import lombok.Data;
 

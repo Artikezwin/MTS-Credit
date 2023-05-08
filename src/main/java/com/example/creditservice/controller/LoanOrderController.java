@@ -4,9 +4,9 @@ import com.example.creditservice.model.response.DataResponse;
 import com.example.creditservice.model.response.DataResponseLoanOrder;
 import com.example.creditservice.model.response.DataResponseStatus;
 import com.example.creditservice.model.response.DataResponseTariff;
-import com.example.creditservice.model.loan.order.CreateOrder;
-import com.example.creditservice.model.loan.order.DeleteOrder;
-import com.example.creditservice.model.tariff.TariffDTO;
+import com.example.creditservice.model.request.CreateOrder;
+import com.example.creditservice.model.request.DeleteOrder;
+import com.example.creditservice.model.request.TariffDTO;
 import com.example.creditservice.service.LoanOrderService;
 import com.example.creditservice.service.TariffService;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +59,10 @@ public class LoanOrderController {
     @DeleteMapping("/deleteOrder")
     public void deleteOrder(@RequestBody DeleteOrder order) {
         loanOrderService.deleteByOrderIdAndUserId(order.getUserId(), order.getOrderId());
+    }
+
+    @DeleteMapping("/deleteTariff")
+    public void deleteTariff(@RequestParam long id) {
+        tariffService.deleteById(id);
     }
 }

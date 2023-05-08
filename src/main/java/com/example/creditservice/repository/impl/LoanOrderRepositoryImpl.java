@@ -1,7 +1,7 @@
 package com.example.creditservice.repository.impl;
 
 import com.example.creditservice.model.enums.OrderStatus;
-import com.example.creditservice.model.loan.order.LoanOrder;
+import com.example.creditservice.model.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

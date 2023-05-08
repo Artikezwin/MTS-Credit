@@ -1,4 +1,4 @@
-package com.example.creditservice.model.loan.order;
+package com.example.creditservice.model.order;
 
 import com.example.creditservice.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;
