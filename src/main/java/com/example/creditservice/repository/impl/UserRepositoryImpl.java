@@ -14,6 +14,7 @@ import java.util.Optional;
 public class UserRepositoryImpl implements UserRepository {
     private final JdbcTemplate jdbcTemplate;
     private final String SELECT_BY_EMAIL = "SELECT * FROM USERS WHERE email = ?";
+    private final String SELECT_BY_ID = "SELECT * FROM USERS WHERE ID = ?";
     private final String INSERT_INTO_TABLE = "INSERT INTO USERS (firstname, lastname, email, password, role) VALUES (?, ?, ?, ?, ?)";
     private final String DELETE_BY_ID = "DELETE FROM USERS WHERE ID = ?";
 
@@ -39,7 +40,17 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(long id) {
-        return Optional.empty();
+        try {
+            return Optional.ofNullable(
+                    jdbcTemplate.queryForObject(
+                            SELECT_BY_ID,
+                            new BeanPropertyRowMapper<>(User.class),
+                            id
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     @Override

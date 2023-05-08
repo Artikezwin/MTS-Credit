@@ -7,6 +7,7 @@ import com.example.creditservice.model.request.CreateOrder;
 import com.example.creditservice.model.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import com.example.creditservice.repository.TariffRepository;
+import com.example.creditservice.repository.UserRepository;
 import com.example.creditservice.service.LoanOrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +23,7 @@ import java.util.UUID;
 public class LoanOrderServiceImpl implements LoanOrderService {
     private final LoanOrderRepository loanOrderRepository;
     private final TariffRepository tariffRepository;
+    private final UserRepository userRepository;
 
     @Override
     public List<LoanOrder> findByUserId(long userId) {
@@ -30,6 +32,8 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
     @Override
     public UUID save(CreateOrder order) {
+        userRepository.findById(order.getUserId()).orElseThrow(() -> new CustomException("USER_NOT_FOUND", "Пользователь не найден"));
+
         LoanOrder loanOrder = new LoanOrder();
         loanOrder.setUserId(order.getUserId());
         loanOrder.setTariffId(order.getTariffId());
