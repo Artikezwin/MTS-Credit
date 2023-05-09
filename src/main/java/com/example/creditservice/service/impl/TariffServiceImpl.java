@@ -1,5 +1,6 @@
 package com.example.creditservice.service.impl;
 
+import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.exception.TimeOutException;
 import com.example.creditservice.model.tariff.Tariff;
 import com.example.creditservice.model.request.TariffDTO;
@@ -30,7 +31,10 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public int deleteById(long id) {
-        return tariffRepository.delete(id);
+        if (tariffRepository.existsById(id)) {
+            return tariffRepository.delete(id);
+        }
+        throw new CustomException("ORDER_NOT_FOUND", "Заявка не найдена");
     }
 
     @Override
