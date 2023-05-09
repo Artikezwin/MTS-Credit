@@ -1,7 +1,7 @@
-package com.example.creditservice.service.impl;
+package com.example.creditservice.util;
 
 import com.example.creditservice.model.enums.OrderStatus;
-import com.example.creditservice.model.loan.order.LoanOrder;
+import com.example.creditservice.model.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;

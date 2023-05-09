@@ -1,7 +1,7 @@
 package com.example.creditservice.repository;
 
 import com.example.creditservice.model.enums.OrderStatus;
-import com.example.creditservice.model.loan.order.LoanOrder;
+import com.example.creditservice.model.order.LoanOrder;
 
 import java.sql.Timestamp;
 import java.util.List;

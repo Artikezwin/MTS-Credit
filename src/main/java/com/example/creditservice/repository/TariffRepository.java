@@ -9,5 +9,5 @@ public interface TariffRepository {
     Optional<List<Tariff>> findAll();
     Boolean existsById(long tariffId);
     int save(Tariff tariff);
-    Optional<Tariff> delete(long id);
+    int delete(long id);
 }

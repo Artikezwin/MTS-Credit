@@ -1,4 +1,4 @@
-package com.example.creditservice.model.tariff;
+package com.example.creditservice.model.request;
 
 import lombok.Data;
 

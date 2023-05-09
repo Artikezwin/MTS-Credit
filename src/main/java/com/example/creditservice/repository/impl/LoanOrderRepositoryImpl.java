@@ -1,7 +1,7 @@
 package com.example.creditservice.repository.impl;
 
 import com.example.creditservice.model.enums.OrderStatus;
-import com.example.creditservice.model.loan.order.LoanOrder;
+import com.example.creditservice.model.order.LoanOrder;
 import com.example.creditservice.repository.LoanOrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,7 +96,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
         return jdbcTemplate.update(
                 DELETE_BY_USER_ID_AND_ORDER_ID,
                 userId,
-                orderId
+                orderId.toString()
         );
     }
 

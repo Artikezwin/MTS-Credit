@@ -2,8 +2,8 @@ package com.example.creditservice.service;
 
 import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.model.enums.OrderStatus;
-import com.example.creditservice.model.loan.order.CreateOrder;
-import com.example.creditservice.model.loan.order.LoanOrder;
+import com.example.creditservice.model.request.CreateOrder;
+import com.example.creditservice.model.order.LoanOrder;
 
 import java.util.List;
 import java.util.UUID;
