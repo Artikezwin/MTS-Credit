@@ -27,17 +27,21 @@ POST http://localhost:8080/auth/authenticate
 }
 ```
 
-Далее вы копируете сгенерированный токен. Далее переходите в любой метод, требующий авторизацию, выбираете способ "Bearer Token" и вставляете его.
+Сперва вы копируете сгенерированный токен. Далее переходите в любой метод, требующий авторизацию, выбираете способ "Bearer Token" и вставляете его.
+Внимание: обязательно посмотрите пункт 3 в скриншотах перед тестированием!
 
 
 ## Скриншоты Postman
 
 1) Авторизация
-   ![1-step](src/main/resources/static/1-step.jpg)
 
-2)  Подтверждение личности при запросе
-    ![2-step](src/main/resources/static/2-step.jpg)
+   <img alt="1-step" height="200" src="src/main/resources/static/1-step.jpg"/>
+
+2) Подтверждение личности при запросе
+
+   <img alt="2-step" height="200" src="src/main/resources/static/2-step.jpg"/>
 
 3) Внимание! Так как реализована связь между таблицами "users" и "loan_order" userId несуществующего пользователя в таблице указывать нельзя
-   ![warning](src/main/resources/static/warning.jpg)
+
+   <img alt="warning" height="200" src="src/main/resources/static/warning.jpg"/>
 
