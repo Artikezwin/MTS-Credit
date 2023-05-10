@@ -35,13 +35,13 @@ POST http://localhost:8080/auth/authenticate
 
 1) Авторизация
 
-   <img alt="1-step" height="200" src="src/main/resources/static/1-step.jpg"/>
+   <img alt="1-step" height="300" src="src/main/resources/static/1-step.jpg"/>
 
 2) Подтверждение личности при запросе
 
-   <img alt="2-step" height="200" src="src/main/resources/static/2-step.jpg"/>
+   <img alt="2-step" height="300" src="src/main/resources/static/2-step.jpg"/>
 
 3) Внимание! Так как реализована связь между таблицами "users" и "loan_order" userId несуществующего пользователя в таблице указывать нельзя
 
-   <img alt="warning" height="200" src="src/main/resources/static/warning.jpg"/>
+   <img alt="warning" height="300" src="src/main/resources/static/warning.jpg"/>
 
