@@ -1,5 +1,6 @@
 package com.example.creditservice.service.impl;
 
+import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.model.enums.Role;
 import com.example.creditservice.model.request.AuthenticationRequest;
 import com.example.creditservice.model.request.RegisterRequest;
@@ -29,13 +30,17 @@ public class AuthenticationServiceImpl {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_USER)
                 .build();
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            userRepository.save(user);
+            var jwtToken = jwtService.generateToken(user);
 
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        } else {
+            throw new CustomException("USER_ALREADY_EXISTS", "Пользователь с таким email уже существует");
+        }
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
