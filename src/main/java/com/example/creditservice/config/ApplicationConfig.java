@@ -27,12 +27,14 @@ import javax.sql.DataSource;
 public class ApplicationConfig {
     private final UserRepository userRepository;
 
+    // Добавляем скрипт, который необходимо выполнить, чтобы заполнить бд
     private DatabasePopulator databasePopulator() {
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(new ClassPathResource("data.sql"));
         return populator;
     }
 
+    // Инициаилазация БД. С помощью аннотации @Qualifier внедряем DataSource без дополнительного метода
     @Bean
     public DataSourceInitializer dataSourceInitializer(@Qualifier("dataSource") final DataSource dataSource) {
         final DataSourceInitializer initializer = new DataSourceInitializer();
@@ -46,11 +48,14 @@ public class ApplicationConfig {
         return new BCryptPasswordEncoder();
     }
 
+    // Объясняем Spring Security, что username - это email в базе данных
     @Bean
-    public UserDetailsService userDetailsService() {
+    public UserDetailsService userDetailsService() {    // создаю бин UserDetailsService, отвечающий за однозначное определение полей таких как пароль, логин и тд
         return username -> userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+
+    // Определяем класс, отвечающий за аутентификацию (подтверждение личности)
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -59,6 +64,10 @@ public class ApplicationConfig {
         return authProvider;
     }
 
+    /* перед попадением запроса в контроллер, он сначала идет в цепочку фильтров
+     * далее выполняется аутентификация (подтверждение личности засчет сравнения пароля и логина)
+     * указывает, куда ему идти (в authenticationProvider)
+     */
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();

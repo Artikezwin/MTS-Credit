@@ -7,6 +7,8 @@ import com.example.creditservice.model.request.RegisterRequest;
 import com.example.creditservice.model.response.AuthenticationResponse;
 import com.example.creditservice.model.user.User;
 import com.example.creditservice.repository.UserRepository;
+import com.example.creditservice.service.AuthenticationService;
+import com.example.creditservice.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,12 +17,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthenticationServiceImpl {
+public class AuthenticationServiceImpl implements AuthenticationService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtServiceImpl jwtService;
-    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;  // Тот самый AuthenticationManager, отвечающий за вход запроса через цепочку фильтров
 
+    @Override
 
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
@@ -43,7 +46,9 @@ public class AuthenticationServiceImpl {
 
     }
 
+    @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        // AuthManager -> AuthProvider -> UserDetailsService -> UserDetails
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),

@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TariffRepository {
-    Optional<List<Tariff>> findAll();
+    List<Tariff> findAll();
     Boolean existsById(long tariffId);
+    Boolean existsByType(String type);
     int save(Tariff tariff);
     int delete(long id);
 }

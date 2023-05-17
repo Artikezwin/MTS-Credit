@@ -29,6 +29,7 @@ public class User implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
+    // Определяю необходимые методы для Spring Security, чтобы он понимал какие поля за что отвечаюь
     @Override
     public String getPassword() {
         return password;
@@ -39,21 +40,25 @@ public class User implements UserDetails {
         return email;
     }
 
+    // Не истек ли срок действия аккаунта?
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    // Не заблокирован аккаунт?
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    // Не истек ли срок действия данных аккаунта?
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    // Активирован ли аккаунт?
     @Override
     public boolean isEnabled() {
         return true;

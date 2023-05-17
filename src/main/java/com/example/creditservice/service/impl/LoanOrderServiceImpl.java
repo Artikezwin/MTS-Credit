@@ -27,7 +27,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
 
     @Override
     public List<LoanOrder> findByUserId(long userId) {
-        return loanOrderRepository.findByUserId(userId).orElseThrow();
+        return loanOrderRepository.findByUserId(userId);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LoanOrderServiceImpl implements LoanOrderService {
         loanOrder.setTariffId(order.getTariffId());
 
         if (tariffRepository.existsById(loanOrder.getTariffId())) {
-            List<LoanOrder> loanOrderList = loanOrderRepository.findByUserId(loanOrder.getUserId()).orElseThrow();
+            List<LoanOrder> loanOrderList = loanOrderRepository.findByUserId(loanOrder.getUserId());
 
             for (int i = 0; i < loanOrderList.size(); i++) {
                 if (loanOrderList.get(i).getTariffId() == loanOrder.getTariffId()) {
