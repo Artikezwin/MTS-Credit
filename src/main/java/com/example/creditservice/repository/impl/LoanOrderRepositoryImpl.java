@@ -34,13 +34,11 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
     }
 
     @Override
-    public Optional<List<LoanOrder>> findByUserId(long userId) {
-        return Optional.of(
-                jdbcTemplate.query(
-                        SELECT_FROM_TABLE_WHERE_USER_ID,
-                        new BeanPropertyRowMapper<>(LoanOrder.class),
-                        userId
-                )
+    public List<LoanOrder> findByUserId(long userId) {
+        return jdbcTemplate.query(
+                SELECT_FROM_TABLE_WHERE_USER_ID,
+                new BeanPropertyRowMapper<>(LoanOrder.class),
+                userId
         );
     }
 
@@ -77,7 +75,7 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
 
     @Override
     public Optional<OrderStatus> getStatusByOrderId(UUID orderId) {
-        try{
+        try {
             return Optional.ofNullable(
                     jdbcTemplate.queryForObject(
                             SELECT_FROM_TABLE_WHERE_ORDER_ID,
@@ -101,13 +99,11 @@ public class LoanOrderRepositoryImpl implements LoanOrderRepository {
     }
 
     @Override
-    public Optional<List<LoanOrder>> findByStatus(OrderStatus status) {
-        return Optional.of(
-                jdbcTemplate.query(
-                        SELECT_WHERE_STATUS_IN_PROGRESS,
-                        new BeanPropertyRowMapper<>(LoanOrder.class),
-                        status.toString()
-                )
+    public List<LoanOrder> findByStatus(OrderStatus status) {
+        return jdbcTemplate.query(
+                SELECT_WHERE_STATUS_IN_PROGRESS,
+                new BeanPropertyRowMapper<>(LoanOrder.class),
+                status.toString()
         );
     }
 

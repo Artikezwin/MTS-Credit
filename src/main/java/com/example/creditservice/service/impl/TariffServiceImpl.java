@@ -18,15 +18,19 @@ public class TariffServiceImpl implements TariffService {
 
     @Override
     public List<Tariff> getTariffs() {
-        return tariffRepository.findAll().orElseThrow();
+        return tariffRepository.findAll();
     }
 
     @Override
     public int save(TariffDTO tariffDTO) {
-        Tariff tariff = new Tariff();
-        tariff.setType(tariffDTO.getType());
-        tariff.setInterestRate(tariffDTO.getInterest_rate());
-        return tariffRepository.save(tariff);
+        if (!tariffRepository.existsByType(tariffDTO.getType())) {
+            Tariff tariff = new Tariff();
+            tariff.setType(tariffDTO.getType());
+            tariff.setInterestRate(tariffDTO.getInterest_rate());
+            return tariffRepository.save(tariff);
+        } else {
+            throw new CustomException("TARIFF_ALREADY_EXISTS", "Тариф уже существует в таблице");
+        }
     }
 
     @Override

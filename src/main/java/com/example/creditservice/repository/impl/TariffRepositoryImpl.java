@@ -14,7 +14,8 @@ import java.util.Optional;
 public class TariffRepositoryImpl implements TariffRepository {
     private final JdbcTemplate jdbcTemplate;
     private final String SELECT_ALL_FROM_TABLE = "select * from TARIFF";
-    private final String SELECT_EXISTS_BY_ID = "SELECT EXISTS (select * from TARIFF where ID = ?)";
+    private final String SELECT_EXISTS_BY_ID = "SELECT EXISTS (select ID from TARIFF where ID = ?)";
+    private final String SELECT_EXISTS_BY_TYPE = "SELECT EXISTS (select TYPE from TARIFF where TYPE = ?)";
     private final String INSERT_INTO_TABLE = "insert into TARIFF (TYPE, INTEREST_RATE) values (?, ?)";
     private final String DELETE_FROM_TABLE = "delete from TARIFF where ID = ?";
 
@@ -25,17 +26,20 @@ public class TariffRepositoryImpl implements TariffRepository {
 
 
     @Override
-    public Optional<List<Tariff>> findAll() {
-        return Optional.of(
-                jdbcTemplate.query(
-                        SELECT_ALL_FROM_TABLE,
-                        new BeanPropertyRowMapper<>(Tariff.class))
-        );
+    public List<Tariff> findAll() {
+        return jdbcTemplate.query(
+                SELECT_ALL_FROM_TABLE,
+                new BeanPropertyRowMapper<>(Tariff.class));
     }
 
     @Override
     public Boolean existsById(long tariffId) {
         return jdbcTemplate.queryForObject(SELECT_EXISTS_BY_ID, Boolean.class, tariffId);
+    }
+
+    @Override
+    public Boolean existsByType(String type) {
+        return jdbcTemplate.queryForObject(SELECT_EXISTS_BY_TYPE, Boolean.class, type);
     }
 
     @Override
