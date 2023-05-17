@@ -29,9 +29,12 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
         PersistenceLayerTestConfig.class,
         LoanOrderRepositoryImpl.class
 })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)    // без этого не робит liquibase, использование создание бд с конфига (liquibase)
-@EnableJpaRepositories(basePackages = {"ru.mts.credit_registration"})   // указываем директурию для сканирования бинов, которые описаны выше
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)     // Для BeforeAll нужен статический метод, что создает ограничения (использование только статических полей, бинов и тд)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+// без этого не робит liquibase, использование создание бд с конфига (liquibase)
+@EnableJpaRepositories(basePackages = {"ru.mts.credit_registration"})
+// указываем директурию для сканирования бинов, которые описаны выше
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+// Для BeforeAll нужен статический метод, что создает ограничения (использование только статических полей, бинов и тд)
 // мы это ограничение обходим через управление жизненным циклом теста. Мы создадим только один экземпляр класса для теста и будем его использовать всегда
 public class LoanOrderRepositoryTest {
 
