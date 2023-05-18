@@ -17,6 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final String SELECT_BY_ID = "SELECT * FROM USERS WHERE ID = ?";
     private final String INSERT_INTO_TABLE = "INSERT INTO USERS (firstname, lastname, email, password, role) VALUES (?, ?, ?, ?, ?)";
     private final String DELETE_BY_ID = "DELETE FROM USERS WHERE ID = ?";
+    private final String EXIST_BY_EMAIL = "SELECT EXISTS (select EMAIL from USERS where EMAIL = ?)";
 
     @Autowired
     public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
@@ -56,12 +57,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int save(User user) {
         return jdbcTemplate.update(
-            INSERT_INTO_TABLE,
-            user.getFirstname(),
-            user.getLastname(),
-            user.getEmail(),
-            user.getPassword(),
-            user.getRole().toString()
+                INSERT_INTO_TABLE,
+                user.getFirstname(),
+                user.getLastname(),
+                user.getEmail(),
+                user.getPassword(),
+                user.getRole().toString()
         );
     }
 
@@ -71,5 +72,10 @@ public class UserRepositoryImpl implements UserRepository {
                 DELETE_BY_ID,
                 id
         );
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return jdbcTemplate.queryForObject(EXIST_BY_EMAIL, Boolean.class, email);
     }
 }

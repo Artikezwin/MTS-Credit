@@ -1,5 +1,6 @@
 package com.example.creditservice.service.impl;
 
+import com.example.creditservice.exception.CustomException;
 import com.example.creditservice.model.enums.Role;
 import com.example.creditservice.model.request.AuthenticationRequest;
 import com.example.creditservice.model.request.RegisterRequest;
@@ -23,22 +24,25 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;  // Тот самый AuthenticationManager, отвечающий за вход запроса через цепочку фильтров
 
     @Override
-
     public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
-                .firstname(request.getFirstname())
-                .lastname(request.getLastname())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.ROLE_USER)
-                .build();
+        if (!userRepository.existsByEmail(request.getEmail())) {
+            var user = User.builder()
+                    .firstname(request.getFirstname())
+                    .lastname(request.getLastname())
+                    .email(request.getEmail())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .role(Role.ROLE_USER)
+                    .build();
 
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+            userRepository.save(user);
+            var jwtToken = jwtService.generateToken(user);
 
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .build();
+        } else {
+            throw new CustomException("USER_ALREADY_EXISTS", "Пользователь уже существует");
+        }
     }
 
     @Override
