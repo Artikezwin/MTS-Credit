@@ -25,15 +25,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public AuthenticationResponse register(RegisterRequest request) {
+        var user = User.builder()
+                .firstname(request.getFirstname())
+                .lastname(request.getLastname())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.ROLE_USER)
+                .build();
         if (!userRepository.existsByEmail(request.getEmail())) {
-            var user = User.builder()
-                    .firstname(request.getFirstname())
-                    .lastname(request.getLastname())
-                    .email(request.getEmail())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .role(Role.ROLE_USER)
-                    .build();
-
             userRepository.save(user);
             var jwtToken = jwtService.generateToken(user);
 
@@ -41,8 +40,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .token(jwtToken)
                     .build();
         } else {
-            throw new CustomException("USER_ALREADY_EXISTS", "Пользователь уже существует");
+            throw new CustomException("USER_ALREADY_EXISTS", "Пользователь с таким email уже существует");
         }
+
     }
 
     @Override
