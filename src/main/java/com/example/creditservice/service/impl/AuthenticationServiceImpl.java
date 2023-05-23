@@ -24,7 +24,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;  // Тот самый AuthenticationManager, отвечающий за вход запроса через цепочку фильтров
 
     @Override
-
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
                 .firstname(request.getFirstname())

@@ -59,7 +59,7 @@ public class LoanOrderRepositoryTest {
 
     @Test
     public void findOrdersByUserId() {
-        Long userId = testOrder.getUserId();
+        long userId = testOrder.getUserId();
 
         List<LoanOrder> actualOrders = loanOrderRepository.findByUserId(userId);
 
@@ -98,7 +98,7 @@ public class LoanOrderRepositoryTest {
     @Test
     public void deleteByUserIdAndOrderId() {
         String orderId = UUID.randomUUID().toString();
-        Long userId = 1L;
+        long userId = 1L;
         LoanOrder orderToSave = LoanOrder.builder()
                 .orderId(orderId)
                 .userId(userId)
@@ -119,7 +119,7 @@ public class LoanOrderRepositoryTest {
 
     @Test
     public void findByUserIdAndOrderId() {
-        Long userId = testOrder.getUserId();
+        long userId = testOrder.getUserId();
         String orderId = testOrder.getOrderId();
         Double creditRating = testOrder.getCreditRating();
 

@@ -40,7 +40,7 @@ public class TariffRepositoryTest {
 
     @Test
     public void willReturnTrueWhenExistById() {
-        Long tariffId = 1L;
+        long tariffId = 1L;
 
         boolean isExists = tariffRepository.existsById(tariffId);
 
@@ -49,7 +49,7 @@ public class TariffRepositoryTest {
 
     @Test
     public void willReturnFalseWhenExistById() {
-        Long falseId = -1L;
+        long falseId = -1L;
 
         boolean isExists = tariffRepository.existsById(falseId);
 
